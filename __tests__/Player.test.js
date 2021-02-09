@@ -2,6 +2,7 @@ const Potion = require("../lib/Potion");
 jest.mock("../lib/Potion");
 
 const Player = require("../lib/Player");
+const { expect, test } = require("@jest/globals");
 
 test("creates a player object", () => {
   const player = new Player("Dave");
@@ -13,4 +14,24 @@ test("creates a player object", () => {
   expect(player.health).toEqual(expect.any(Number));
   expect(player.strength).toEqual(expect.any(Number));
   expect(player.agility).toEqual(expect.any(Number));
+});
+
+test("gets player's stats as an object", () => {
+  const player = new Player("Dave");
+
+  expect(player.getStats()).toHaveProperty("potions");
+  expect(player.getStats()).toHaveProperty("health");
+  expect(player.getStats()).toHaveProperty("strength");
+  expect(player.getStats()).toHaveProperty("agility");
+});
+
+test("gets inventory from player or returns false", () => {
+  const player = new Player("Dave");
+
+  // on player creation, the inventory should return an array
+  expect(player.getInventory()).toEqual(expect.any(Array));
+
+  // simulates empty inventory which should return false
+  player.inventory = [];
+  expect(player.getInventory()).toEqual(false);
 });
